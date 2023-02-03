@@ -1,0 +1,5 @@
+# Gradle build output
+.gradle/
+
+# IntelliJ IDEA
+.idea/
