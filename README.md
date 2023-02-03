@@ -1,5 +1,5 @@
 # DD2480-Assignment2
-#### A project by [4 KTH students](#developers-and-their-main-contributions) on  a hypothetical anti-ballistic missile system, that contains a function called DECIDE(). The project is written in Java and uses the build automation tool Gradle as well as JUnit as testing framework.
+#### A project by [4 KTH students](#developers-and-their-main-contributions)
 
 ## Git Commit Message Template
 ### `type(domain): Description #issuenumber`
