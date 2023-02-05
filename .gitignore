@@ -9,3 +9,4 @@ build/
 # Macstuff
 .DS_Store
 ./DS_Store
+bin/
