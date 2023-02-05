@@ -1,5 +1,11 @@
 # Gradle build output
 .gradle/
+.build/
+build/
 
 # IntelliJ IDEA
 .idea/
+
+# Macstuff
+.DS_Store
+./DS_Store
