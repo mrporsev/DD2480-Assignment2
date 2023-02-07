@@ -64,7 +64,6 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
         //Get repository URL and branch from HTTP payload
         System.out.println(request.getParameterNames());
-        //test
         /*
         repositoryUrl = request.getParameter("svn_url");
         branch = request.getParameter("ref"); //branch name
