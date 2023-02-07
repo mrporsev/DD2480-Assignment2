@@ -61,7 +61,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
         String payload = request.getReader().lines().collect(Collectors.joining());
         JSONObject jsonObject = new JSONObject(payload);
 
-
+        //dummy
+        //another dummy
         //Get repository URL and branch from HTTP payload
         System.out.println(request.getParameterNames());
         /*
