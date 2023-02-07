@@ -21,6 +21,7 @@ dependencies {
     implementation 'org.eclipse.jetty:jetty-servlet:9.4.24.v20191120'
     implementation group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '6.0.0.202111291000-r'
+    implementation 'org.json:json:20171018'
 }
 
 test {

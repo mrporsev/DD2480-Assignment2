@@ -1,5 +1,6 @@
 package se.kth.assignment2;
 
+import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
@@ -7,7 +8,9 @@ import javax.servlet.ServletException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
+import netscape.javascript.JSObject;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -44,21 +47,33 @@ public class ContinuousIntegrationServer extends AbstractHandler
         // for example
         // 1st clone your repository
         // 2nd compile the code
-        
+
+        //StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         String line;
         System.out.println("The received payload is:");
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
+            //sb.append(line).append('\n');
         }
         System.out.println("END OF PAYLOAD");
+
+        String payload = request.getReader().lines().collect(Collectors.joining());
+        JSONObject jsonObject = new JSONObject(payload);
 
 
         //Get repository URL and branch from HTTP payload
         System.out.println(request.getParameterNames());
+        /*
         repositoryUrl = request.getParameter("svn_url");
         branch = request.getParameter("ref"); //branch name
         commitHash = request.getParameter("sha"); //commit hash , used to checkout the branch
+        */
+
+
+        repositoryUrl = getRepositoryUrl(jsonObject);
+        branch = getBranch(jsonObject); //branch name
+        commitHash = getCommitHash(jsonObject); //commit hash , used to checkout the branch
 
         System.out.println("Repository URL: " + repositoryUrl);
         System.out.println("Branch: " + branch);
@@ -122,6 +137,19 @@ public class ContinuousIntegrationServer extends AbstractHandler
         } else {
             System.out.println("Failure!");
         }
+    }
+
+    private String getBranch(JSONObject jsonObject) {
+        return jsonObject.getString("ref");
+
+    }
+
+    private String getRepositoryUrl(JSONObject jsonObject) {
+        return jsonObject.getJSONObject("repository").getString("clone_url");
+    }
+
+    private String getCommitHash(JSONObject jsonObject) {
+        return jsonObject.getString("sha");
     }
 
     // used to start the CI server in command line ,
