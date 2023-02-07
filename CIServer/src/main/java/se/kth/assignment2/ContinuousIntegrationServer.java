@@ -43,6 +43,15 @@ public class ContinuousIntegrationServer extends AbstractHandler
         // for example
         // 1st clone your repository
         // 2nd compile the code
+        
+        BufferedReader reader = request.getReader();
+        String line;
+        System.out.println("The received payload is:");
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+        System.out.println("END OF PAYLOAD");
+
 
         //Get repository URL and branch from HTTP payload
         repositoryUrl = request.getParameter("repository_url");
@@ -110,12 +119,10 @@ public class ContinuousIntegrationServer extends AbstractHandler
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
-        runGradlew();
-        /*
+        //runGradlew();
         Server server = new Server(8080);
         server.setHandler(new ContinuousIntegrationServer());
         server.start();
         server.join();
-        */
     }
 }
