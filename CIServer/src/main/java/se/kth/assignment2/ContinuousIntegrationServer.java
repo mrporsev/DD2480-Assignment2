@@ -55,9 +55,10 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 
         //Get repository URL and branch from HTTP payload
+        System.out.println(request.getParameterNames());
         repositoryUrl = request.getParameter("svn_url");
         branch = request.getParameter("ref"); //branch name
-        commitHash = request.getParameter("sha"); //commit hash ,
+        commitHash = request.getParameter("sha"); //commit hash , used to checkout the branch
 
         System.out.println("Repository URL: " + repositoryUrl);
         System.out.println("Branch: " + branch);
