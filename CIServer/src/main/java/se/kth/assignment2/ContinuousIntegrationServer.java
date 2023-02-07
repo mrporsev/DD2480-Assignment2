@@ -120,7 +120,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     public static void main(String[] args) throws Exception
     {
         //runGradlew();
-        Server server = new Server(8080);
+        Server server = new Server(8028);
         server.setHandler(new ContinuousIntegrationServer());
         server.start();
         server.join();
