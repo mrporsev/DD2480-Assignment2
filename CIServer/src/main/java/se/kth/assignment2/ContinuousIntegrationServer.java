@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
+import org.eclipse.jgit.util.FileUtils;
 
 /**
  Skeleton of a ContinuousIntegrationServer which acts as webhook
@@ -59,11 +61,16 @@ public class ContinuousIntegrationServer extends AbstractHandler
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
+
+        //Add clean up command to delete the sample from the cloned repository to not keep using more and more disk-space
+        //FIleUtils.deleteDirectory(localPath);
         
         response.getWriter().println("CI job done");
     }
 
     private void cloneRepository() throws GitAPIException, IOException {
+
+        System.out.println("Cloning from " + repositoryUrl + "...");
         //Clone repository
         Git.cloneRepository()
                 .setURI(repositoryUrl)
@@ -76,12 +83,39 @@ public class ContinuousIntegrationServer extends AbstractHandler
         git.checkout().setName(branch).call();
     }
 
+    public static void runGradlew() throws IOException, InterruptedException {
+        String[] commands = {"/bin/bash", "-c", "./gradlew test build"};
+        ProcessBuilder processBuilder = new ProcessBuilder(commands);
+        processBuilder.directory(new File("/Users/porsev.aslan/REPOSITORIES/SWE/CIServer"));
+        Process process = processBuilder.start();
+
+        //Write output to console using bufferreader
+        BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
+        String line;
+        System.out.println("This is output: ");
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+        System.out.println("This is END");
+
+        int exitCode = process.waitFor();
+        
+        if (exitCode == 0) {
+            System.out.println("Success!");
+        } else {
+            System.out.println("Failure!");
+        }
+    }
+
     // used to start the CI server in command line
     public static void main(String[] args) throws Exception
     {
+        runGradlew();
+        /*
         Server server = new Server(8080);
         server.setHandler(new ContinuousIntegrationServer());
         server.start();
         server.join();
+        */
     }
 }
