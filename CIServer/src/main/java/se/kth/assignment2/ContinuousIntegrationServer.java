@@ -1,5 +1,6 @@
 package se.kth.assignment2;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,9 +68,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
         //String payload = request.getReader().lines().collect(Collectors.joining());
         JSONObject jsonObject = new JSONObject(sb.toString());
 
-        // comment
-        //another dummy comment
-        //dummy comment hereeeeeee
+
         //Get repository URL and branch from HTTP payload
         //System.out.println(request.getParameterNames());
         /*
@@ -89,8 +88,17 @@ public class ContinuousIntegrationServer extends AbstractHandler
         
         System.out.println("Commit hash: " + commitHash);
 
+        CloneCommand cloneCommand = Git.cloneRepository();
+        cloneCommand.setURI(repositoryUrl);
+        cloneCommand.setDirectory(new File("Repository"));
+        cloneCommand.setBranch(branch);
+        try {
+            cloneCommand.call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        }
         
-
+        /*
         //Clone repository
         try(Git repository = Git.cloneRepository()
         .setURI(repositoryUrl)
@@ -107,6 +115,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
             System.out.println("Utanför fetch");
             repository.checkout().setName(branch).call();
 
+
+
             runGradlew();
         } catch (GitAPIException e) {
             e.printStackTrace();
@@ -114,6 +124,8 @@ public class ContinuousIntegrationServer extends AbstractHandler
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+         */
 
         response.getWriter().println("CI job done");
     }
