@@ -59,6 +59,10 @@ public class ContinuousIntegrationServer extends AbstractHandler
         branch = request.getParameter("ref"); //branch name
         commitHash = request.getParameter("sha"); //commit hash ,
 
+        System.out.println("Repository URL: " + repositoryUrl);
+        System.out.println("Branch: " + branch);
+        System.out.println("Commit hash: " + commitHash);
+
 
         //Clone repository
         try {
