@@ -26,6 +26,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
 {
     private String repositoryUrl;
     private String branch;
+    private String commitHash;
 
     public void handle(String target,
                        Request baseRequest,
@@ -55,7 +56,9 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
         //Get repository URL and branch from HTTP payload
         repositoryUrl = request.getParameter("repository_url");
-        branch = request.getParameter("branch");
+        branch = request.getParameter("ref"); //branch name
+        commitHash = request.getParameter("sha"); //commit hash
+
 
         //Clone repository
         try {
