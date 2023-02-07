@@ -55,7 +55,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 
         //Get repository URL and branch from HTTP payload
-        repositoryUrl = request.getParameter("repository_url");
+        repositoryUrl = request.getParameter("svn_url");
         branch = request.getParameter("ref"); //branch name
         commitHash = request.getParameter("sha"); //commit hash
 
@@ -119,7 +119,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
         }
     }
 
-    // used to start the CI server in command line
+    // used to start the CI server in command line ,
     public static void main(String[] args) throws Exception
     {
         //runGradlew();
