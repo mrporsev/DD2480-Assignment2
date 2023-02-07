@@ -89,43 +89,38 @@ public class ContinuousIntegrationServer extends AbstractHandler
         System.out.println("Commit hash: " + commitHash);
 
         CloneCommand cloneCommand = Git.cloneRepository();
-        cloneCommand.setURI(repositoryUrl);
-        cloneCommand.setDirectory(new File("Repository"));
-        cloneCommand.setBranch(branch);
         try {
-            cloneCommand.call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-        
-        /*
-        //Clone repository
-        try(Git repository = Git.cloneRepository()
-        .setURI(repositoryUrl)
-        .setDirectory(new File("Repository"))
-        .call()) {
-            System.out.println("After clone");
+            Git repository = cloneCommand.setURI(repositoryUrl).call();
+            System.out.println("After cloning...");
             List<RemoteConfig> remotes = repository.remoteList().call();
+            System.out.println("After remotelist...");
+            repository.checkout().setName("origin/" + branch).call();
+            System.out.println("After checkout...");
             for (RemoteConfig remote : remotes) {
                 repository.fetch()
                     .setRemote(remote.getName())
                     .setRefSpecs(remote.getFetchRefSpecs())
                     .call();
         }
-            System.out.println("Utanför fetch");
-            repository.checkout().setName(branch).call();
-
-
-
-            runGradlew();
+        System.out.println("After loop...");
+            //repository.checkout().getRepository.set("refs/heads/" + branch).call();
+            //System.out.println("After checkout...");
         } catch (GitAPIException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-         */
+        System.out.println("After try catch");
+
+        try {
+            runGradlew();
+            runGradlew();
+            runGradlew();
+            runGradlew();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         response.getWriter().println("CI job done");
     }
@@ -133,7 +128,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     public static void runGradlew() throws IOException, InterruptedException {
         String[] commands = {"/bin/bash", "-c", "./gradlew test build"};
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
-        processBuilder.directory(new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/Repository"));
+        processBuilder.directory(new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/DD2480-Assignment2/CIServer"));
         Process process = processBuilder.start();
 
         //Write output to console using bufferreader
