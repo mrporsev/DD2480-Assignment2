@@ -8,6 +8,8 @@ import javax.servlet.ServletException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import netscape.javascript.JSObject;
@@ -17,7 +19,9 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.TextProgressMonitor;
 import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.RemoteConfig;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 
@@ -48,22 +52,24 @@ public class ContinuousIntegrationServer extends AbstractHandler
         // 1st clone your repository
         // 2nd compile the code
 
-        //StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+        
         BufferedReader reader = request.getReader();
         String line;
         System.out.println("The received payload is:");
         while ((line = reader.readLine()) != null) {
             System.out.println(line);
-            //sb.append(line).append('\n');
+            sb.append(line).append('\n');
         }
         System.out.println("END OF PAYLOAD");
-
-        String payload = request.getReader().lines().collect(Collectors.joining());
-        JSONObject jsonObject = new JSONObject(payload);
+        
+        System.out.println("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLLOOO");
+        //String payload = request.getReader().lines().collect(Collectors.joining());
+        JSONObject jsonObject = new JSONObject(sb.toString());
 
 
         //Get repository URL and branch from HTTP payload
-        System.out.println(request.getParameterNames());
+        //System.out.println(request.getParameterNames());
         /*
         repositoryUrl = request.getParameter("svn_url");
         branch = request.getParameter("ref"); //branch name
@@ -72,53 +78,48 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 
         repositoryUrl = getRepositoryUrl(jsonObject);
+        System.out.println("Repository URL: " + repositoryUrl);
         branch = getBranch(jsonObject); //branch name
+        System.out.println("Branch: " + branch);
         commitHash = getCommitHash(jsonObject); //commit hash , used to checkout the branch
 
-        System.out.println("Repository URL: " + repositoryUrl);
-        System.out.println("Branch: " + branch);
+        
+        
         System.out.println("Commit hash: " + commitHash);
 
-
-        //Clone repository
-        try {
-            cloneRepository();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-
-        //Checkout branch
-        try {
-            checkoutBranch();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-
-        //Add clean up command to delete the sample from the cloned repository to not keep using more and more disk-space
-        //FIleUtils.deleteDirectory(localPath);
         
-        response.getWriter().println("CI job done");
-    }
 
-    private void cloneRepository() throws GitAPIException, IOException {
-
-        System.out.println("Cloning from " + repositoryUrl + "...");
         //Clone repository
-        Git.cloneRepository()
-                .setURI(repositoryUrl)
-                .setDirectory(new File("Repository"))
-                .call();
-    }
+        try(Git repository = Git.cloneRepository()
+        .setURI(repositoryUrl)
+        .setDirectory(new File("Repository"))
+        .call()) {
+            System.out.println("After clone");
+            List<RemoteConfig> remotes = repository.remoteList().call();
+            for (RemoteConfig remote : remotes) {
+                repository.fetch()
+                    .setRemote(remote.getName())
+                    .setRefSpecs(remote.getFetchRefSpecs())
+                    .call();
+        }
+            System.out.println("Utanför fetch");
+            repository.checkout().setName(branch).call();
 
-    private void checkoutBranch() throws GitAPIException, IOException {
-        Git git = Git.open(new File("Repository"));
-        git.checkout().setName(branch).call();
+            runGradlew();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        response.getWriter().println("CI job done");
     }
 
     public static void runGradlew() throws IOException, InterruptedException {
         String[] commands = {"/bin/bash", "-c", "./gradlew test build"};
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
-        processBuilder.directory(new File("/Users/porsev.aslan/REPOSITORIES/SWE/CIServer"));
+        processBuilder.directory(new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/Repository"));
         Process process = processBuilder.start();
 
         //Write output to console using bufferreader
@@ -140,7 +141,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     }
 
     private String getBranch(JSONObject jsonObject) {
-        return jsonObject.getString("ref");
+        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("ref");
 
     }
 
@@ -149,7 +150,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
     }
 
     private String getCommitHash(JSONObject jsonObject) {
-        return jsonObject.getString("sha");
+        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("sha");
     }
 
     // used to start the CI server in command line ,
