@@ -54,8 +54,8 @@ public class Build {
     private String runGradlew() throws IOException, InterruptedException {
         String[] commands = { "/bin/bash", "-c", "./gradlew test build" };
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
-        processBuilder.directory(
-                new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/DD2480-Assignment2/CIServer"));
+        String currentWorkingDirectory = System.getProperty("user.dir");
+        processBuilder.directory(new File(currentWorkingDirectory));
         Process process = processBuilder.start();
 
         // Write output to console using bufferreader
@@ -72,6 +72,8 @@ public class Build {
         int exitCode = process.waitFor();
 
         if (exitCode == 0) {
+            StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, BuildStatus.SUCCESS);
+            statusHandler.sendStatus();
             System.out.println("BUILD RESULT : Success!");
             status = BuildStatus.SUCCESS;
         } else {
