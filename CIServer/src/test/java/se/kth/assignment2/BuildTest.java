@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ContinuousIntegrationServerTest {
+class BuildTest {
 
     @BeforeEach
     void setUp() {
@@ -17,10 +17,6 @@ class ContinuousIntegrationServerTest {
     }
 
     @Test
-    void handle() {
-    }
-
-    @Test
-    void main() {
+    void build() {
     }
 }

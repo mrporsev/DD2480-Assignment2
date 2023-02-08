@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ContinuousIntegrationServerTest {
+class RequestHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -17,10 +17,22 @@ class ContinuousIntegrationServerTest {
     }
 
     @Test
-    void handle() {
+    void getJsonObject() {
     }
 
     @Test
-    void main() {
+    void getBranch() {
+    }
+
+    @Test
+    void getClone_url() {
+    }
+
+    @Test
+    void getCommitHash() {
+    }
+
+    @Test
+    void doBuild() {
     }
 }
