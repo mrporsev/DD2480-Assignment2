@@ -27,17 +27,15 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ * Skeleton of a ContinuousIntegrationServer which acts as webhook
+ * See the Jetty documentation for API documentation of those classes.
  */
-public class ContinuousIntegrationServer extends AbstractHandler
-{
+public class ContinuousIntegrationServer extends AbstractHandler {
     public void handle(String target,
-                       Request baseRequest,
-                       HttpServletRequest request,
-                       HttpServletResponse response)
-            throws IOException, ServletException
-    {
+            Request baseRequest,
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws IOException, ServletException {
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
@@ -50,7 +48,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
         // 2nd compile the code
 
         StringBuilder sb = new StringBuilder();
-        
+
         BufferedReader reader = request.getReader();
         String line;
         System.out.println("The received payload is:");
@@ -62,17 +60,17 @@ public class ContinuousIntegrationServer extends AbstractHandler
         RequestHandler requestHandler = new RequestHandler(jsonObject);
         requestHandler.doBuild();
 
-
         response.getWriter().println("CI job done");
     }
 
     // used to start the CI server in command line ,
-    public static void main(String[] args) throws Exception
-    {
-        //runGradlew();
+    public static void main(String[] args) throws Exception {
+        // runGradlew();
         Server server = new Server(8028);
         server.setHandler(new ContinuousIntegrationServer());
         server.start();
         server.join();
     }
 }
+
+// ADDED DUMMY COMMENT FOR PR TEST
