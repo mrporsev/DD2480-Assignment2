@@ -42,6 +42,9 @@ class RequestHandlerTest {
     void tearDown() {
     }
 
+    /**
+     * test if functions gets a json object
+     */
     @Test
     void getJsonObject() {
 
