@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.List;
 
 
+/**
+ * Contains information needed for the build and methods for building
+ */
 public class Build {
     private String branch;
     private String clone_url;
@@ -20,12 +23,23 @@ public class Build {
     private String outputBuild;
     private BuildStatus status;
 
+    /**
+     * Constructs with properties about what (branch) to clone and build
+     * @param branch branch name
+     * @param clone_url url to clone the repo
+     * @param commitHash commit hash
+     */
     public Build(String branch, String clone_url, String commitHash) {
         this.branch = branch;
         this.clone_url = clone_url;
         this.commitHash = commitHash;
     }
 
+    /**
+     * Runs the build
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void build() throws IOException, InterruptedException {
         cloneRepo();
         StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, status);
@@ -33,6 +47,9 @@ public class Build {
         outputBuild = runGradlew();
     }
 
+    /**
+     * Clones the specified repository branch into a local folder to prepare testing
+     */
     private void cloneRepo() {
         System.out.println("cloning the repository...");
         CloneCommand cloneCommand = Git.cloneRepository();
@@ -58,6 +75,13 @@ public class Build {
         System.out.println("clone and checkout SUCCESS !");
     }
 
+
+    /**
+     * Runs the gradle build process (including tests), and sets the BuildStatus
+     * @return the output of the build
+     * @throws IOException
+     * @throws InterruptedException
+     */
     private String runGradlew() throws IOException, InterruptedException {
         String[] commands = { "/bin/bash", "-c", "./gradlew test build" };
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
@@ -111,9 +135,24 @@ public class Build {
         return sb.toString();
     }
 
+    /**
+     * Contains possible states that a (completed) build can have
+     *
+     */
     public enum BuildStatus {
+        /**
+         * The build procsses completed successfully
+         */
         SUCCESS("success"),
+
+        /**
+         *The build process completed without success
+         */
         FAILURE("failure"),
+
+        /**
+         *The build process did not complete due to an error
+         */
         ERROR("error");
 
         private String status;
@@ -122,6 +161,10 @@ public class Build {
             this.status = status;
         }
 
+        /**
+         * Converts a BuildStatus into a string that can be easily stored or transferred
+         * @return String corresponding to this BuildStatus
+         */
         public String getStatus() {
             return status;
         }
