@@ -26,9 +26,9 @@ public class Build {
 
     public void build() throws IOException, InterruptedException {
         cloneRepo();
-        outputBuild = runGradlew();
         StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, status);
-        statusHandler.sendStatus();
+        statusHandler.sendStatusPending();
+        outputBuild = runGradlew();
     }
 
     private void cloneRepo() {
@@ -70,15 +70,16 @@ public class Build {
         System.out.println("BUILD : This is END");
 
         int exitCode = process.waitFor();
+        StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, BuildStatus.SUCCESS);
 
         if (exitCode == 0) {
-            StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, BuildStatus.SUCCESS);
-            statusHandler.sendStatus();
+            statusHandler.sendStatusCorrect();
             System.out.println("BUILD RESULT : Success!");
             status = BuildStatus.SUCCESS;
         } else {
             System.out.println("BUILD RESULT : Failure!");
             status = BuildStatus.FAILURE;
+            statusHandler.sendStatusFailure();
         }
 
         // Removes the cloned directory so we can clone again without removing it
