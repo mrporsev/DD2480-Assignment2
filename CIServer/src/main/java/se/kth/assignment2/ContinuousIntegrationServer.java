@@ -32,10 +32,6 @@ import org.eclipse.jgit.util.FileUtils;
  */
 public class ContinuousIntegrationServer extends AbstractHandler
 {
-    private String repositoryUrl;
-    private String branch;
-    private String commitHash;
-
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -62,104 +58,12 @@ public class ContinuousIntegrationServer extends AbstractHandler
             System.out.println(line);
             sb.append(line).append('\n');
         }
-        System.out.println("END OF PAYLOAD");
-        
-        System.out.println("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELLLLOOO");
-        //String payload = request.getReader().lines().collect(Collectors.joining());
         JSONObject jsonObject = new JSONObject(sb.toString());
+        RequestHandler requestHandler = new RequestHandler(jsonObject);
+        requestHandler.doBuild();
 
-
-        //Get repository URL and branch from HTTP payload
-        //System.out.println(request.getParameterNames());
-        /*
-        repositoryUrl = request.getParameter("svn_url");
-        branch = request.getParameter("ref"); //branch name
-        commitHash = request.getParameter("sha"); //commit hash , used to checkout the branch
-        */
-
-
-        repositoryUrl = getRepositoryUrl(jsonObject);
-        System.out.println("Repository URL: " + repositoryUrl);
-        branch = getBranch(jsonObject); //branch name
-        System.out.println("Branch: " + branch);
-        commitHash = getCommitHash(jsonObject); //commit hash , used to checkout the branch
-
-        
-        
-        System.out.println("Commit hash: " + commitHash);
-
-        CloneCommand cloneCommand = Git.cloneRepository();
-        try {
-            Git repository = cloneCommand.setURI(repositoryUrl).call();
-            System.out.println("After cloning...");
-            List<RemoteConfig> remotes = repository.remoteList().call();
-            System.out.println("After remotelist...");
-            repository.checkout().setName("origin/" + branch).call();
-            System.out.println("After checkout...");
-            for (RemoteConfig remote : remotes) {
-                repository.fetch()
-                    .setRemote(remote.getName())
-                    .setRefSpecs(remote.getFetchRefSpecs())
-                    .call();
-        }
-        System.out.println("After loop...");
-            //repository.checkout().getRepository.set("refs/heads/" + branch).call();
-            //System.out.println("After checkout...");
-        } catch (GitAPIException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        System.out.println("After try catch");
-
-        try {
-            runGradlew();
-            runGradlew();
-            runGradlew();
-            runGradlew();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
         response.getWriter().println("CI job done");
-    }
-
-    public static void runGradlew() throws IOException, InterruptedException {
-        String[] commands = {"/bin/bash", "-c", "./gradlew test build"};
-        ProcessBuilder processBuilder = new ProcessBuilder(commands);
-        processBuilder.directory(new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/DD2480-Assignment2/CIServer"));
-        Process process = processBuilder.start();
-
-        //Write output to console using bufferreader
-        BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
-        String line;
-        System.out.println("This is output: ");
-        while ((line = reader.readLine()) != null) {
-            System.out.println(line);
-        }
-        System.out.println("This is END");
-
-        int exitCode = process.waitFor();
-        
-        if (exitCode == 0) {
-            System.out.println("Success!");
-        } else {
-            System.out.println("Failure!");
-        }
-    }
-
-    private String getBranch(JSONObject jsonObject) {
-        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("ref");
-
-    }
-
-    private String getRepositoryUrl(JSONObject jsonObject) {
-        return jsonObject.getJSONObject("repository").getString("clone_url");
-    }
-
-    private String getCommitHash(JSONObject jsonObject) {
-        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("sha");
     }
 
     // used to start the CI server in command line ,
