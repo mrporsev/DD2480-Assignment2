@@ -25,51 +25,73 @@ class RequestHandlerTest {
 
     /*
      * Tests whether the method in RequestHandler can pick out the correct branch
-     * from the JSON object.
-     * Should return true.
+     * from the created JSON object which is used for testing.
+     * Should be equal.
      */
     @Test
     void getBranch() {
-        // TODO: CREATE A JSON OBJECT TO USE
-        String jsonDummyString;
-        JSONObject jsonDummyRequestData = new JSONObject();
-        RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
-        // TODO: FILL IN THE EXPECTED BRANCH NAME
-        String expectedBranch = "";
+        JSONObject json = new JSONObject();
+        JSONObject pull_json = new JSONObject();
+        JSONObject head_json = new JSONObject();
+        JSONObject clone_json = new JSONObject();
+        clone_json.put("clone_url", "https://github.com/testuser/testrepo.git");
+        head_json.put("ref", "test-branch-#1");
+        head_json.put("sha", "abcdef123456789");
+        pull_json.put("head", head_json);
+        json.put("pull_request", pull_json);
+        json.put("repository", clone_json);
+
+        RequestHandler requestHandler = new RequestHandler(json);
+        String expectedBranch = "test-branch-#1";
         String actualBranch = requestHandler.getBranch();
         assertEquals(expectedBranch, actualBranch);
     }
 
     /*
      * Tests whether the method in RequestHandler can pick out the correct URL, for
-     * the repo which is cloned, from the JSON object.
-     * Should return true.
+     * the repo which is cloned, from the created JSON object which is used for
+     * testing.
+     * Should be equal.
      */
     @Test
     void getClone_url() {
-        // TODO: CREATE A JSON OBJECT TO USE
-        String jsonDummyString;
-        JSONObject jsonDummyRequestData = new JSONObject();
-        RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
-        // TODO: FILL IN THE EXPECTED CLONE URL
-        String expectedUrl = "";
+        JSONObject json = new JSONObject();
+        JSONObject pull_json = new JSONObject();
+        JSONObject head_json = new JSONObject();
+        JSONObject clone_json = new JSONObject();
+        clone_json.put("clone_url", "https://github.com/testuser/testrepo.git");
+        head_json.put("ref", "test-branch-#1");
+        head_json.put("sha", "abcdef123456789");
+        pull_json.put("head", head_json);
+        json.put("pull_request", pull_json);
+        json.put("repository", clone_json);
+
+        RequestHandler requestHandler = new RequestHandler(json);
+        String expectedUrl = "https://github.com/testuser/testrepo.git";
         String actualUrl = requestHandler.getClone_url();
         assertEquals(expectedUrl, actualUrl);
     }
 
     /*
      * Tests whether the method in RequestHandler can pick out the correct commit
-     * hash from the JSON object.
-     * Should return true.
+     * hash from the created JSON object which is used for testing.
+     * Should be equal.
      */
     @Test
     void getCommitHash() {
-        // TODO: CREATE A JSON OBJECT TO USE
-        String jsonDummyString;
-        JSONObject jsonDummyRequestData = new JSONObject();
-        RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
-        // TODO: FILL IN THE EXPECTED COMMIT HASH
-        String expectedHash = "";
+        JSONObject json = new JSONObject();
+        JSONObject pull_json = new JSONObject();
+        JSONObject head_json = new JSONObject();
+        JSONObject clone_json = new JSONObject();
+        clone_json.put("clone_url", "https://github.com/testuser/testrepo.git");
+        head_json.put("ref", "test-branch-#1");
+        head_json.put("sha", "abcdef123456789");
+        pull_json.put("head", head_json);
+        json.put("pull_request", pull_json);
+        json.put("repository", clone_json);
+
+        RequestHandler requestHandler = new RequestHandler(json);
+        String expectedHash = "abcdef123456789";
         String actualHash = requestHandler.getCommitHash();
         assertEquals(expectedHash, actualHash);
     }
