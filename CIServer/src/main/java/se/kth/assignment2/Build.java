@@ -3,6 +3,7 @@ package se.kth.assignment2;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteConfig;
 
 import java.io.BufferedReader;
@@ -51,12 +52,13 @@ public class Build {
     }
 
     private String runGradlew() throws IOException, InterruptedException {
-        String[] commands = {"/bin/bash", "-c", "./gradlew test build"};
+        String[] commands = { "/bin/bash", "-c", "./gradlew test build" };
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
-        processBuilder.directory(new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/DD2480-Assignment2/CIServer"));
+        processBuilder.directory(
+                new File("/home/p/o/porsev/Documents/SWE/DD2480-Assignment2/CIServer/DD2480-Assignment2/CIServer"));
         Process process = processBuilder.start();
 
-        //Write output to console using bufferreader
+        // Write output to console using bufferreader
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = new BufferedReader(new java.io.InputStreamReader(process.getInputStream()));
         String line;
@@ -76,7 +78,36 @@ public class Build {
             System.out.println("BUILD RESULT : Failure!");
             status = BuildStatus.FAILURE;
         }
+
+        // Removes the cloned directory so we can clone again without removing it
+        // manually
+        File directory = new File(currentWorkingDirectory + "/DD2480-Assignment2");
+        if (directory.exists()) {
+            deleteDirectory(directory);
+            System.out.println("Directory deleted.");
+        } else {
+            System.out.println("Directory not found.");
+        }
+
         return sb.toString();
+    }
+
+    /*
+     * Method for removing the recently cloned directory in order to be able to
+     * clone another one during next pull request
+     */
+    private static void deleteDirectory(File directory) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        directory.delete();
     }
 
     public enum BuildStatus {
