@@ -5,11 +5,13 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteConfig;
+import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 
 public class Build {
     private String branch;
@@ -34,8 +36,9 @@ public class Build {
     private void cloneRepo() {
         System.out.println("cloning the repository...");
         CloneCommand cloneCommand = Git.cloneRepository();
+        Git repository = null;
         try {
-            Git repository = cloneCommand.setURI(clone_url).call();
+            repository = cloneCommand.setURI(clone_url).call();
             List<RemoteConfig> remotes = repository.remoteList().call();
             System.out.println("checking out the branch...");
             repository.checkout().setName("origin/" + branch).call();
@@ -47,6 +50,10 @@ public class Build {
             }
         } catch (GitAPIException e) {
             e.printStackTrace();
+        } finally {
+            if (repository != null) {
+                repository.close();
+            }
         }
         System.out.println("clone and checkout SUCCESS !");
     }
@@ -85,35 +92,23 @@ public class Build {
         // Removes the cloned directory so we can clone again without removing it
         // manually
         File directory = new File(currentWorkingDirectory + "/DD2480-Assignment2");
-        if (directory.exists()) {
-            deleteDirectory(directory);
-            System.out.println("Directory deleted.");
-        } else {
-            System.out.println("Directory not found.");
-        }
-
-        return sb.toString();
-    }
-
-    /*
-     * Method for removing the recently cloned directory in order to be able to
-     * clone another one during next pull request
-     */
-    private static void deleteDirectory(File directory) {
-        File[] files = directory.listFiles();
-        if (files != null) {
+        FileUtils.forceDelete(directory);
+        
+        if (directory.exists() && directory.isDirectory()) {
+            System.out.println("Directory still exists processing to delete...");
+            File currentWorkingStation = new File(currentWorkingDirectory);
+            File[] files = currentWorkingStation.listFiles();
             for (File file : files) {
-                if (file.isDirectory()) {
-                    deleteDirectory(file);
-                } else {
-                    file.delete();
+                if (file.getName().equals("DD2480-Assignment2")) {
+                    System.out.println(file.getName());
+                    FileUtils.forceDelete(file);
                 }
             }
+            System.out.println("Directory should be deleted...");
         }
-        directory.delete();
-        while (directory.exists()) {
-            directory.delete();
-        }
+        //FileUtils.deleteDirectory(directory);
+
+        return sb.toString();
     }
 
     public enum BuildStatus {

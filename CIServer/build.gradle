@@ -25,6 +25,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.2'
+    implementation 'commons-io:commons-io:2.7'
+
 }
 
 test {
