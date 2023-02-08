@@ -57,13 +57,27 @@ class ContinuousIntegrationServerTest {
     }
 
     @Test
-    void handlerValidInput() {
-
+    void handlerValidTypeBranch() {
+        // Make different json Objects to try?
+        RequestHandler requestHandler = new RequestHandler(null);
+        var testBranch = requestHandler.getBranch();
+        boolean testBranchBoolean = false;
+        if (testBranch instanceof String) {
+            testBranchBoolean = true;
+        }
+        assertEquals(testBranchBoolean, true);
     }
 
     @Test
-    void handlerInvalidInput() {
-
+    void handlerInvalidTypeBranch() {
+        // Make different json Objects to try?
+        RequestHandler requestHandler = new RequestHandler(null);
+        var testBranch = requestHandler.getBranch();
+        boolean testBranchBoolean = false;
+        if (testBranch instanceof String) {
+            testBranchBoolean = true;
+        }
+        assertEquals(testBranchBoolean, false);
     }
 
     @Test
