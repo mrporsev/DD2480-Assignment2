@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.json.JSONObject;
+
 //test class
 class RequestHandlerTest {
 
@@ -21,8 +23,20 @@ class RequestHandlerTest {
     void getJsonObject() {
     }
 
+    /*
+     * Tests whether the method in RequestHandler can pick out the correct branch
+     * from the JSON object.
+     * Should return true.
+     */
     @Test
     void getBranch() {
+        // TODO: CREATE A JSON OBJECT TO USE
+        JSONObject jsonDummyRequestData = new JSONObject("{}");
+        RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
+        // TODO: FILL IN THE EXPECTED BRANCH NAME
+        String expectedBranch = "";
+        String actualBranch = requestHandler.getBranch();
+        assertEquals(expectedBranch, actualBranch);
     }
 
     @Test
