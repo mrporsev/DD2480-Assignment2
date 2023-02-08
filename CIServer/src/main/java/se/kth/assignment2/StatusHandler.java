@@ -20,7 +20,7 @@ public class StatusHandler {
     private String clone_url;
     private String commitHash;
     private String outputBuild;
-    private String ACCESS_TOKEN = "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";
+    private String ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
     private String BASE_URL = "https://api.github.com/repos/";
     private String REPO_OWNER ="mrporsev";
     private String repo_name = "DD2480-Assignment2";
