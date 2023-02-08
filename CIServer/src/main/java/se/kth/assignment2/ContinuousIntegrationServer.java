@@ -27,11 +27,23 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+    CI server that checks if pull_requests and commits are upp to par with Group28's set of requirements
  */
 public class ContinuousIntegrationServer extends AbstractHandler
 {
+    /**
+     *
+     * @param target The target of the request - either a URI or a name.
+     * @param baseRequest The original unwrapped request object.
+     * @param request The request either as the {@link Request} object or a wrapper of that request. The
+     * <code>{@link HttpConnection#getCurrentConnection()}.{@link HttpConnection#getHttpChannel() getHttpChannel()}.{@link HttpChannel#getRequest() getRequest()}</code>
+     * method can be used access the Request object if required.
+     * @param response The response as the {@link Response} object or a wrapper of that request. The
+     * <code>{@link HttpConnection#getCurrentConnection()}.{@link HttpConnection#getHttpChannel() getHttpChannel()}.{@link HttpChannel#getResponse() getResponse()}</code>
+     * method can be used access the Response object if required.
+     * @throws IOException
+     * @throws ServletException
+     */
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
