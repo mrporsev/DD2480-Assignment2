@@ -31,7 +31,8 @@ class RequestHandlerTest {
     @Test
     void getBranch() {
         // TODO: CREATE A JSON OBJECT TO USE
-        JSONObject jsonDummyRequestData = new JSONObject("{}");
+        String jsonDummyString;
+        JSONObject jsonDummyRequestData = new JSONObject();
         RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
         // TODO: FILL IN THE EXPECTED BRANCH NAME
         String expectedBranch = "";
@@ -47,16 +48,30 @@ class RequestHandlerTest {
     @Test
     void getClone_url() {
         // TODO: CREATE A JSON OBJECT TO USE
+        String jsonDummyString;
         JSONObject jsonDummyRequestData = new JSONObject();
         RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
-        // TODO: FILL IN THE EXPECTED BRANCH NAME
+        // TODO: FILL IN THE EXPECTED CLONE URL
         String expectedUrl = "";
         String actualUrl = requestHandler.getClone_url();
         assertEquals(expectedUrl, actualUrl);
     }
 
+    /*
+     * Tests whether the method in RequestHandler can pick out the correct commit
+     * hash from the JSON object.
+     * Should return true.
+     */
     @Test
     void getCommitHash() {
+        // TODO: CREATE A JSON OBJECT TO USE
+        String jsonDummyString;
+        JSONObject jsonDummyRequestData = new JSONObject();
+        RequestHandler requestHandler = new RequestHandler(jsonDummyRequestData);
+        // TODO: FILL IN THE EXPECTED COMMIT HASH
+        String expectedHash = "";
+        String actualHash = requestHandler.getCommitHash();
+        assertEquals(expectedHash, actualHash);
     }
 
     @Test
