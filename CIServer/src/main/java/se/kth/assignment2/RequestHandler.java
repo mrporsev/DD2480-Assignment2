@@ -21,9 +21,21 @@ public class RequestHandler {
         return jsonObject;
     }
 
-    private String extractBranch(JSONObject jsonObject) {
-        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("ref");
+    private boolean isPullReq(JSONObject jsonObject) {
+        return jsonObject.has("pull_request");
+    }
 
+    private String extractBranch(JSONObject jsonObject) {
+        return isPullReq(jsonObject) ? jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("ref") : jsonObject.getString("ref").replace("refs/heads/", "");
+
+    }
+
+    private boolean proccess(JSONObject jsonObject) {
+        if (!isPullReq(jsonObject)) return true;
+        else {
+            String action = jsonObject.getString("action");
+            return  action.equals("opened") || action.equals("reopened") || action.equals("converted_to_draft");
+        }
     }
 
     public String getBranch() {
@@ -43,18 +55,21 @@ public class RequestHandler {
     }
 
     private String extractCommitHash(JSONObject jsonObject) {
-        return jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("sha");
+        return isPullReq(jsonObject) ? jsonObject.getJSONObject("pull_request").getJSONObject("head").getString("sha") : jsonObject.getString("after");
     }
 
     public void doBuild(){
-        Build build = new Build(branch, clone_url, commitHash);
-        try {
-            build.build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if(proccess(jsonObject)) {
+            Build build = new Build(branch, clone_url, commitHash);
+            try {
+                build.build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
 }
