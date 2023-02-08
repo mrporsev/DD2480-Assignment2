@@ -36,7 +36,7 @@ public class StatusHandler {
 
     public void sendStatusCorrect() throws ClientProtocolException, IOException {
 
-        System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
+        //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -73,7 +73,7 @@ public class StatusHandler {
         if (statusCode != 201) {
             System.out.println("Failed to create commit status: " + statusCode);
         } else {
-            System.out.println("Successfully created commit status");
+            System.out.println("Successfully created commit status (SUCCESS)");
         }
 
 
@@ -83,7 +83,7 @@ public class StatusHandler {
 
     public void sendStatusFailure() throws ClientProtocolException, IOException {
 
-        System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
+        //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -120,7 +120,7 @@ public class StatusHandler {
         if (statusCode != 201) {
             System.out.println("Failed to create commit status: " + statusCode);
         } else {
-            System.out.println("Successfully created commit status");
+            System.out.println("Successfully created commit status (FAILURE)");
         }
 
 
@@ -130,7 +130,7 @@ public class StatusHandler {
 
     public void sendStatusPending() throws ClientProtocolException, IOException {
 
-        System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
+        //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -167,7 +167,7 @@ public class StatusHandler {
         if (statusCode != 201) {
             System.out.println("Failed to create commit status: " + statusCode);
         } else {
-            System.out.println("Successfully created commit status");
+            System.out.println("Successfully created commit status (PENDING)");
         }
 
 
