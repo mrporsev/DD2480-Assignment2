@@ -111,6 +111,9 @@ public class Build {
             }
         }
         directory.delete();
+        while (directory.exists()) {
+            directory.delete();
+        }
     }
 
     public enum BuildStatus {
