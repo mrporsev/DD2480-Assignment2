@@ -34,7 +34,7 @@ public class RequestHandler {
         if (!isPullReq(jsonObject)) return true;
         else {
             String action = jsonObject.getString("action");
-            return  action.equals("opened") || action.equals("reopened") || action.equals("converted_to_draft");
+            return  action.equals("opened") || action.equals("reopened") || action.equals("converted_to_draft") || action.equals("ready_for_review");
         }
     }
 
