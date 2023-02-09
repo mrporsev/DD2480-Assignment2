@@ -52,7 +52,6 @@ public class StatusHandler {
      */
     public void sendStatusCorrect() throws ClientProtocolException, IOException {
         
-        System.out.println("TOKEN: " + ACCESS_TOKEN);
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost(BASE_URL + REPO_OWNER + "/" + repo_name + "/statuses/" + commitHash);
@@ -116,7 +115,7 @@ public class StatusHandler {
         //Create request body
         String state = "failure";
         String target_url = "https://241e-2001-6b0-1-1df0-ce96-e5ff-fe0c-7b99.eu.ngrok.io/" + commitHash + ".txt";
-        String description = "The build has completed successfully";
+        String description = "The build or test failed";
         String context = "continuous-integration/jenkins";
 
         ObjectMapper mapper = new ObjectMapper();
@@ -167,7 +166,7 @@ public class StatusHandler {
         //Create request body
         String state = "pending";
         String target_url = "https://241e-2001-6b0-1-1df0-ce96-e5ff-fe0c-7b99.eu.ngrok.io/" + commitHash + ".txt";
-        String description = "The build has completed successfully";
+        String description = "Building and testing in progress...";
         String context = "continuous-integration/jenkins";
 
         ObjectMapper mapper = new ObjectMapper();
