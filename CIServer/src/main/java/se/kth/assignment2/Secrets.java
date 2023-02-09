@@ -9,7 +9,9 @@ public class Secrets {
 
     public Secrets() {
         try {
-            File file = new File("token.txt");
+            System.out.println();
+            String currentWorkingDirectory = System.getProperty("user.dir");
+            File file = new File(currentWorkingDirectory + "/token.txt");
 
             Scanner scanner = new Scanner(file);
 
