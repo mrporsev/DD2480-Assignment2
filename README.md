@@ -56,3 +56,4 @@ Porsev - Commit status, REST API calls, JGIT.
 David - Tests, REST API, server setup.
 Pontus - Tests, notifications, build history.
 
+
