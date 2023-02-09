@@ -41,9 +41,13 @@ Based on the checklist criterias in p. 52 in the [Essence standard](https://ww
 To reach the next state “Performing”, the group agreed on the facts that they fulfill some of the requirements but fails to fully reach some of the criterias. Since the project got stalled in the beginning phase, setting up the server, the group identified the problems but reached out to TAs in order to fully address the problems, which resulted in failing the criteria of addressing problems without outside help. This initial problem of the project resulted in some time wasted which was identified but also took some time to eliminate. 
 
 
-##Notification 
+## Notification 
 
-When a pull request is made the status of every commit is shown on the github page. The status is "SUCCESS" if the build compiles.
+When a pull request is made the status of every commit is shown on the github page. The status is `SUCCESS` if the build compiles and tests correctly, `PENDING` for ongoing builds, and `FAILURE` for failed tests and build.
+
+## Build History
+The build history can be accessed by this URL and for each status notification, one can also acccess the build output of their commit. 
+https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/builds
 
 ## Contributions
 
