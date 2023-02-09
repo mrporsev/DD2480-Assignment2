@@ -23,10 +23,10 @@ public class StatusHandler {
     private String clone_url;
     private String commitHash;
     private String outputBuild;
-    private String ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
     private String BASE_URL = "https://api.github.com/repos/";
     private String REPO_OWNER ="mrporsev";
     private String repo_name = "DD2480-Assignment2";
+    String ACCESS_TOKEN;
     private Build.BuildStatus status;
 
     /**
@@ -51,6 +51,13 @@ public class StatusHandler {
      * @throws IOException
      */
     public void sendStatusCorrect() throws ClientProtocolException, IOException {
+        try {
+            Class.forName("Secrets");
+            ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
+        } catch(ClassNotFoundException e) {
+            ACCESS_TOKEN = "abcdefg";
+        }
+        
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost(BASE_URL + REPO_OWNER + "/" + repo_name + "/statuses/" + commitHash);
@@ -61,7 +68,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "success";
-        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
+        String target_url = "https://69c7-2001-6b0-1-1df0-2be-43ff-feb8-c810.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -100,7 +107,12 @@ public class StatusHandler {
      * @throws IOException
      */
     public void sendStatusFailure() throws ClientProtocolException, IOException {
-
+        try {
+            Class.forName("Secrets");
+            ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
+        } catch(ClassNotFoundException e) {
+            ACCESS_TOKEN = "abcdefg";
+        }
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -113,7 +125,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "failure";
-        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
+        String target_url = "https://69c7-2001-6b0-1-1df0-2be-43ff-feb8-c810.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -152,7 +164,12 @@ public class StatusHandler {
      * @throws IOException
      */
     public void sendStatusPending() throws ClientProtocolException, IOException {
-
+        try {
+            Class.forName("Secrets");
+            ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
+        } catch(ClassNotFoundException e) {
+            ACCESS_TOKEN = "abcdefg";
+        }
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -165,7 +182,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "pending";
-        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
+        String target_url = "https://69c7-2001-6b0-1-1df0-2be-43ff-feb8-c810.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
