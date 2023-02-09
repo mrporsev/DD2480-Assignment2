@@ -30,6 +30,7 @@ public class Build {
         StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, status);
         statusHandler.sendStatusPending();
         outputBuild = runGradlew();
+    }
 
     private void cloneRepo() {
         System.out.println("cloning the repository...");
