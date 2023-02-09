@@ -18,6 +18,7 @@ public class Secrets {
             
         } catch (FileNotFoundException e) {
             // TODO: handle exception
+            System.out.println("INSIDE CATCH!");
             ACCESS_TOKEN = "abcd";
         }
     }
