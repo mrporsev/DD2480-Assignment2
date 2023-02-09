@@ -15,8 +15,7 @@ bin/
 ngrok
 
 # secrets
-Secrets
-Secrets.java
+token.txt
 
 # builds
 builds/
