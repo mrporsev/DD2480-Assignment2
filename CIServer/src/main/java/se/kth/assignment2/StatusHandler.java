@@ -111,6 +111,7 @@ public class StatusHandler {
             Class.forName("Secrets");
             ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
         } catch(ClassNotFoundException e) {
+
             ACCESS_TOKEN = "abcdefg";
         }
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
