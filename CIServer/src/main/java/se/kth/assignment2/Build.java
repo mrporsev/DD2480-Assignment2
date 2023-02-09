@@ -122,7 +122,8 @@ public class Build {
         System.out.println("BUILD : This is END");
 
         int exitCode = process.waitFor();
-        StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, BuildStatus.SUCCESS);
+        StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild,
+                BuildStatus.SUCCESS);
 
         if (exitCode == 0) {
             statusHandler.sendStatusCorrect();
@@ -138,7 +139,7 @@ public class Build {
         // manually
         File directory = new File(currentWorkingDirectory + "/DD2480-Assignment2");
         FileUtils.forceDelete(directory);
-        
+
         if (directory.exists() && directory.isDirectory()) {
             System.out.println("Directory still exists processing to delete...");
             File currentWorkingStation = new File(currentWorkingDirectory);
@@ -151,7 +152,7 @@ public class Build {
             }
             System.out.println("Directory should be deleted...");
         }
-        //FileUtils.deleteDirectory(directory);
+        // FileUtils.deleteDirectory(directory);
 
         return sb.toString();
     }
