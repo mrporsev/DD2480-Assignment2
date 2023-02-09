@@ -47,7 +47,7 @@ When a pull request is made the status of every commit is shown on the github pa
 
 ## Build History
 The build history can be accessed by this URL and for each status notification, one can also acccess the build output of their commit. 
-https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/builds
+https://69c7-2001-6b0-1-1df0-2be-43ff-feb8-c810.eu.ngrok.io/builds
 
 ## Contributions
 
