@@ -85,7 +85,7 @@ class RequestHandlerTest {
     /*
      * Tests whether the method in RequestHandler can pick out the correct URL, for
      * the repo which is cloned, from the created JSON object which is used for
-     * testing.
+     * testing this.
      * Should be equal.
      */
     @Test
