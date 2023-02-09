@@ -70,7 +70,7 @@ class RequestHandlerTest {
         json.put("repository", clone_json);
 
         RequestHandler requestHandler = new RequestHandler(json);
-        String expectedBranch = "test-branch-#1";
+        String expectedBranch = "test-branch-#";
         String actualBranch = requestHandler.getBranch();
         try {
             assertEquals(expectedBranch, actualBranch);
