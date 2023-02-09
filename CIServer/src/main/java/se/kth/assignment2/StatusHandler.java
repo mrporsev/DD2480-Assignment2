@@ -102,7 +102,7 @@ public class StatusHandler {
      * @throws IOException
      */
     public void sendStatusFailure() throws ClientProtocolException, IOException {
-        
+
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
 
         CloseableHttpClient httpClient = HttpClients.createDefault();
