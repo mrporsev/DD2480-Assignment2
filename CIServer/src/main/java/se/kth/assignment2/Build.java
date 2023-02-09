@@ -103,7 +103,7 @@ public class Build {
      * @throws InterruptedException
      */
     private String runGradlew() throws IOException, InterruptedException {
-        String[] commands = { "/bin/bash", "-c", "./gradlew build test" };
+        String[] commands = { "/bin/bash", "-c", "./gradlew clean build test" };
         ProcessBuilder processBuilder = new ProcessBuilder(commands);
         String currentWorkingDirectory = System.getProperty("user.dir");
         processBuilder.directory(new File(currentWorkingDirectory + "/DD2480-Assignment2/CIServer"));
