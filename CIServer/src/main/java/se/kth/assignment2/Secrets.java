@@ -9,7 +9,6 @@ public class Secrets {
 
     public Secrets() {
         try {
-            System.out.println();
             String currentWorkingDirectory = System.getProperty("user.dir");
             File file = new File(currentWorkingDirectory + "/token.txt");
 
