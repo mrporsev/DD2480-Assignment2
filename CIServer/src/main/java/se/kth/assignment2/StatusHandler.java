@@ -15,6 +15,9 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+/**
+ * Contains information about the build and its outcome in order to send status to github
+ */
 public class StatusHandler {
     private String branch;
     private String clone_url;
@@ -26,6 +29,14 @@ public class StatusHandler {
     private String repo_name = "DD2480-Assignment2";
     private Build.BuildStatus status;
 
+    /**
+     *
+     * @param branch Branch name
+     * @param clone_url url of the repo
+     * @param commitHash commitHash
+     * @param outputBuild output of the build
+     * @param status SUCCESS or FAILURE or ERROR
+     */
     public StatusHandler(String branch, String clone_url, String commitHash, String outputBuild, Build.BuildStatus status) {
         this.branch = branch;
         this.clone_url = clone_url;
@@ -34,10 +45,12 @@ public class StatusHandler {
         this.status = status;
     }
 
+    /**
+     * Reports the build result as a status on GitHub when its a SUCCESS
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public void sendStatusCorrect() throws ClientProtocolException, IOException {
-
-        //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
-
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         HttpPost httpPost = new HttpPost(BASE_URL + REPO_OWNER + "/" + repo_name + "/statuses/" + commitHash);
@@ -48,7 +61,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "success";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -81,6 +94,11 @@ public class StatusHandler {
         response.close();
     }
 
+    /**
+     * Reports the build result as a status on GitHub when its a FAILURE
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public void sendStatusFailure() throws ClientProtocolException, IOException {
 
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
@@ -95,7 +113,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "failure";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -128,6 +146,11 @@ public class StatusHandler {
         response.close();
     }
 
+    /**
+     * Reports the build result as a status on GitHub when its still pending
+     * @throws ClientProtocolException
+     * @throws IOException
+     */
     public void sendStatusPending() throws ClientProtocolException, IOException {
 
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
@@ -142,7 +165,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "pending";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -27,11 +28,24 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 
 /**
- Skeleton of a ContinuousIntegrationServer which acts as webhook
- See the Jetty documentation for API documentation of those classes.
+ CI server that checks if pull_requests and commits are upp to par with Group28's set of requirements
  */
 public class ContinuousIntegrationServer extends AbstractHandler
 {
+    /**
+     *
+     * @param target The target of the request - either a URI or a name.
+     * @param baseRequest The original unwrapped request object.
+     * @param request The request either as the {@link Request} object or a wrapper of that request. The
+     * <code>{@link HttpConnection#getCurrentConnection()}.{@link HttpConnection#getHttpChannel() getHttpChannel()}.{@link HttpChannel#getRequest() getRequest()}</code>
+     * method can be used access the Request object if required.
+     * @param response The response as the {@link Response} object or a wrapper of that request. The
+     * <code>{@link HttpConnection#getCurrentConnection()}.{@link HttpConnection#getHttpChannel() getHttpChannel()}.{@link HttpChannel#getResponse() getResponse()}</code>
+     * method can be used access the Response object if required.
+     * @throws IOException
+     * @throws ServletException
+     */
+
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -41,6 +55,38 @@ public class ContinuousIntegrationServer extends AbstractHandler
         response.setContentType("text/html;charset=utf-8");
         response.setStatus(HttpServletResponse.SC_OK);
         baseRequest.setHandled(true);
+
+        if(request.getMethod().equals("GET")) {
+            if (target.equals("/builds")) {
+                File dir = new File("builds");
+                if (dir.exists() && dir.isDirectory()) {
+                    response.getWriter().println("<html><body>");
+                    File[] files = dir.listFiles();
+                    for (File file : files) {
+                        response.getWriter().println("<a href='" + file.getName() + "'>" + file.getName() + "</a><br>");
+                    }
+                    response.getWriter().println("</body></html>");
+                } else {
+                    response.getWriter().println("Builds folder not found");
+                }
+            } else {
+                try {
+                    File file = new File("builds/" + target);
+                    FileReader fileReader = new FileReader(file);
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    String line;
+                    StringBuilder content = new StringBuilder();
+                    while ((line = bufferedReader.readLine()) != null) {
+                        content.append(line).append("\n");
+                    }
+                    fileReader.close();
+                    response.getWriter().println("<p>" + content.toString() + "</p>");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }   
+            }
+            
+        } else {
 
         System.out.println(target);
 
@@ -64,6 +110,7 @@ public class ContinuousIntegrationServer extends AbstractHandler
 
 
         response.getWriter().println("CI job done");
+        }
     }
 
     // used to start the CI server in command line ,
