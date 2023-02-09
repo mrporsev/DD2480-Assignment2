@@ -52,8 +52,9 @@ public class StatusHandler {
      */
     public void sendStatusCorrect() throws ClientProtocolException, IOException {
         try {
+            Class.forName("Secrets");
             ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
-        } catch(Exception e) {
+        } catch(ClassNotFoundException e) {
             ACCESS_TOKEN = "abcdefg";
         }
         
@@ -107,8 +108,10 @@ public class StatusHandler {
      */
     public void sendStatusFailure() throws ClientProtocolException, IOException {
         try {
+            Class.forName("Secrets");
             ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
-        } catch(Exception e) {
+        } catch(ClassNotFoundException e) {
+
             ACCESS_TOKEN = "abcdefg";
         }
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
@@ -163,8 +166,9 @@ public class StatusHandler {
      */
     public void sendStatusPending() throws ClientProtocolException, IOException {
         try {
+            Class.forName("Secrets");
             ACCESS_TOKEN = new Secrets().ACCESS_TOKEN;
-        } catch(Exception e) {
+        } catch(ClassNotFoundException e) {
             ACCESS_TOKEN = "abcdefg";
         }
         //System.out.println("OUTPRINT WITHIN FUNCTION: " + repo_name + " " + commitHash);
