@@ -9,7 +9,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 
@@ -26,11 +28,25 @@ public class Build {
         this.commitHash = commitHash;
     }
 
+    public void storeBuild(String outputBuild) {
+        try {
+            String currentWorkingDirectory = System.getProperty("user.dir");
+            File newFile = new File(currentWorkingDirectory + "/builds/" + commitHash + ".txt");
+            FileWriter fileWriter = new FileWriter(newFile); 
+            Date date = new Date();
+            fileWriter.write(date.toString() + "\n" + outputBuild);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void build() throws IOException, InterruptedException {
         cloneRepo();
         StatusHandler statusHandler = new StatusHandler(branch, clone_url, commitHash, outputBuild, status);
         statusHandler.sendStatusPending();
         outputBuild = runGradlew();
+        storeBuild(outputBuild);
     }
 
     private void cloneRepo() {

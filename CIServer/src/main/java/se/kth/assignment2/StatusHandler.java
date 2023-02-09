@@ -48,7 +48,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "success";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -95,7 +95,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "failure";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
@@ -142,7 +142,7 @@ public class StatusHandler {
         
         //Create request body
         String state = "pending";
-        String target_url = "https://example.com/build/status";
+        String target_url = "https://a3e2-2001-6b0-1-1df0-7686-e2ff-fe28-e3d4.eu.ngrok.io/" + commitHash + ".txt";
         String description = "The build has completed successfully";
         String context = "continuous-integration/jenkins";
 
