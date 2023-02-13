@@ -18,10 +18,8 @@ class RequestHandlerTest {
     private JSONObject repo_json;
     private JSONObject clone_json;
 
-
-
-
     RequestHandler rh;
+
     @BeforeEach
     void setUp() {
         json = new JSONObject();
@@ -29,12 +27,12 @@ class RequestHandlerTest {
         head_json = new JSONObject();
         clone_json = new JSONObject();
 
-        clone_json.put("clone_url","my_url");
-        head_json.put("ref","my_ref");
-        head_json.put("sha","my_sha");
-        pull_json.put("head",head_json);
-        json.put("pull_request",pull_json);
-        json.put("repository",clone_json);
+        clone_json.put("clone_url", "my_url");
+        head_json.put("ref", "my_ref");
+        head_json.put("sha", "my_sha");
+        pull_json.put("head", head_json);
+        json.put("pull_request", pull_json);
+        json.put("repository", clone_json);
 
         rh = new RequestHandler(json);
 
@@ -74,13 +72,20 @@ class RequestHandlerTest {
         RequestHandler requestHandler = new RequestHandler(json);
         String expectedBranch = "test-branch-#1";
         String actualBranch = requestHandler.getBranch();
-        assertEquals(expectedBranch, actualBranch);
+        try {
+            assertEquals(expectedBranch, actualBranch);
+        } catch (AssertionError e) {
+            System.out.println("AssertionError: " + e.getMessage());
+            System.out
+                    .println("The test for getBranch failed: expected " + expectedBranch + " but got " + actualBranch);
+            throw e;
+        }
     }
 
     /*
      * Tests whether the method in RequestHandler can pick out the correct URL, for
      * the repo which is cloned, from the created JSON object which is used for
-     * testing.
+     * testing this.
      * Should be equal.
      */
     @Test
@@ -99,7 +104,13 @@ class RequestHandlerTest {
         RequestHandler requestHandler = new RequestHandler(json);
         String expectedUrl = "https://github.com/testuser/testrepo.git";
         String actualUrl = requestHandler.getClone_url();
-        assertEquals(expectedUrl, actualUrl);
+        try {
+            assertEquals(expectedUrl, actualUrl);
+        } catch (AssertionError e) {
+            System.out.println("AssertionError: " + e.getMessage());
+            System.out.println("The test for getClone_url failed: expected " + expectedUrl + " but got " + actualUrl);
+            throw e;
+        }
     }
 
     /*
@@ -123,7 +134,14 @@ class RequestHandlerTest {
         RequestHandler requestHandler = new RequestHandler(json);
         String expectedHash = "abcdef123456789";
         String actualHash = requestHandler.getCommitHash();
-        assertEquals(expectedHash, actualHash);
+        try {
+            assertEquals(expectedHash, actualHash);
+        } catch (AssertionError e) {
+            System.out.println("AssertionError: " + e.getMessage());
+            System.out
+                    .println("The test for getCommitHash failed: expected " + expectedHash + " but got " + actualHash);
+            throw e;
+        }
     }
 
     @Test
